@@ -1,31 +1,38 @@
 package initializer
 
 import (
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
 )
 
-func init() {
-	log.SetOutput(os.Stdout)
-	logLevel := getLogLevel()
-	log.SetLevel(logLevel)
+var Logger = &logrus.Logger{
+	Out:       os.Stderr,
+	Formatter: new(logrus.TextFormatter),
+	Hooks:     make(logrus.LevelHooks),
+	Level:     logrus.DebugLevel,
 }
 
-func getLogLevel() log.Level {
+func init() {
+	Logger.SetOutput(os.Stdout)
+	logLevel := getLogLevel()
+	Logger.SetLevel(logLevel)
+}
+
+func getLogLevel() logrus.Level {
 	config := viper.GetString("log_level")
-	var logLevel log.Level
+	var logLevel logrus.Level
 	switch config {
 	case "warn":
-		logLevel = log.WarnLevel
+		logLevel = logrus.WarnLevel
 	case "error":
-		logLevel = log.ErrorLevel
+		logLevel = logrus.ErrorLevel
 	case "debug":
-		logLevel = log.DebugLevel
+		logLevel = logrus.DebugLevel
 	case "info":
-		logLevel = log.InfoLevel
+		logLevel = logrus.InfoLevel
 	default:
-		logLevel = log.InfoLevel
+		logLevel = logrus.InfoLevel
 	}
 	return logLevel
 }
