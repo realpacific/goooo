@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	. "goooo/initializer"
+	"goooo/api"
+	. "goooo/config"
+	. "goooo/logging"
 )
 
 var serveCmd = &cobra.Command{
@@ -11,7 +12,8 @@ var serveCmd = &cobra.Command{
 	Short: "start http server",
 	Long:  `Starts a http server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		Logger.Infof("serving at %v", viper.GetInt("port"))
+		Logger.Infof("serving at %v", GetPort())
+		api.Serve()
 	},
 }
 

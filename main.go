@@ -2,7 +2,8 @@ package main
 
 import (
 	"goooo/cmd"
-	_ "goooo/initializer"
+	_ "goooo/config"
+	_ "goooo/logging"
 )
 
 func main() {

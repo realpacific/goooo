@@ -1,8 +1,8 @@
-package initializer
+package logging
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
+	. "goooo/config"
 	"os"
 )
 
@@ -20,7 +20,7 @@ func init() {
 }
 
 func getLogLevel() logrus.Level {
-	config := viper.GetString("log_level")
+	config := GetLogLevel()
 	var logLevel logrus.Level
 	switch config {
 	case "warn":
