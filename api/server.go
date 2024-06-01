@@ -3,10 +3,10 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/samber/lo"
 	"goooo/bloc"
 	"goooo/config"
 	. "goooo/logging"
-	"log"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -66,6 +66,19 @@ func init() {
 		}
 
 	})
+	r.GET("/employees", func(c *gin.Context) {
+		byName, _ := c.GetQuery("byName")
+		byId, _ := c.GetQuery("byId")
+		query := bloc.EmployeeParams{}
+		if lo.IsNotEmpty[string](byName) {
+			query.ByName = &byName
+		} else if lo.IsNotEmpty[string](byId) {
+			query.ById = &byId
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"data": bloc.ListEmployees(&query),
+		})
+	})
 }
 
 func Serve() {
@@ -74,6 +87,6 @@ func Serve() {
 	err := r.Run(":" + portInt)
 
 	if err != nil {
-		log.Fatalln("failed to start server", err)
+		Logger.Fatalln("failed to start server", err)
 	}
 }
